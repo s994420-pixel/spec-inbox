@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GS Intelligent - 我的訊息</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8fafc;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        }
+        .sidebar-item:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+        }
+        .sidebar-active {
+            color: #2563eb;
+            font-weight: bold;
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        .tab-active {
+            background-color: #2563eb;
+            color: white;
+        }
+        .tab-inactive {
+            background-color: #cbd5e1;
+            color: #64748b;
+        }
+        /* 滾動條樣式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        /* 動畫 */
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- 通知提示容器 -->
+    <div id="notification-container" class="fixed top-20 right-4 z-[100] space-y-2"></div>
+
+    <!-- 頂部導航欄 -->
+    <header class="bg-white border-b sticky top-0 z-40 px-4 py-2 flex items-center justify-between">
+        <div class="flex items-center space-x-6">
+            <div class="flex items-center text-blue-600 font-bold text-xl italic">
+                <i class="fas fa-gem mr-2"></i> GS intelligent
+            </div>
+            <nav class="hidden lg:flex space-x-4 text-gray-600 text-sm">
+                <a href="#" class="hover:text-blue-600">真人視訊</a>
+                <a href="#" class="hover:text-blue-600">老虎機</a>
+                <a href="#" class="hover:text-blue-600">Sports</a>
+                <a href="#" class="hover:text-blue-600">體育</a>
+                <a href="#" class="hover:text-blue-600">電競</a>
+                <a href="#" class="hover:text-blue-600">虛擬體育</a>
+                <a href="#" class="hover:text-blue-600">棋牌</a>
+                <a href="#" class="hover:text-blue-600">其他</a>
+                <a href="#" class="hover:text-blue-600">捕魚機</a>
+                <a href="#" class="hover:text-blue-600">agent</a>
+                <a href="#" class="hover:text-blue-600">頭</a>
+            </nav>
+        </div>
+        <div class="flex items-center space-x-3 text-sm">
+            <div class="bg-blue-50 px-3 py-1 rounded-full flex items-center space-x-2 border border-blue-100">
+                <span class="text-gray-500 font-medium text-xs">EUR</span>
+                <span class="text-blue-700 font-bold">499,296</span>
+                <i class="fas fa-redo text-blue-400 text-xs cursor-pointer"></i>
+            </div>
+            <button class="bg-blue-600 text-white px-4 py-1.5 rounded-md font-bold text-xs hover:bg-blue-700">存款</button>
+            <button class="bg-blue-500 text-white px-4 py-1.5 rounded-md font-bold text-xs flex items-center hover:bg-blue-600">
+                <i class="fas fa-wallet mr-2"></i> 錢包
+            </button>
+            <div class="font-bold text-gray-700 hidden sm:block">KATEST7771</div>
+            <i class="far fa-envelope text-gray-500 cursor-pointer hover:text-blue-600"></i>
+            <img src="https://flagcdn.com/w20/tw.png" class="w-5 h-4" alt="Taiwan Flag">
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- 側邊欄 -->
+        <aside class="w-56 bg-white min-h-screen border-r hidden md:block">
+            <div class="py-4 text-xs">
+                <div class="px-4 py-2 text-gray-500 flex items-center sidebar-item cursor-pointer sidebar-active">
+                    <i class="fas fa-user-circle mr-3 w-5"></i> 我的帳號 <i class="fas fa-caret-down ml-auto"></i>
+                </div>
+                <div class="px-4 py-2 text-gray-500 flex items-center sidebar-item cursor-pointer pl-10"><i class="fas fa-star mr-3 w-5 text-blue-500"></i> BETBY</div>
+                <div class="px-4 py-2 text-gray-500 flex items-center sidebar-item cursor-pointer pl-10"><i class="fas fa-slot-machine mr-3 w-5 text-red-500"></i> 老虎機</div>
+                <div class="px-4 py-2 text-gray-500 flex items-center sidebar-item cursor-pointer pl-10"><i class="fas fa-dice-d20 mr-3 w-5 text-red-600"></i> 真人視訊</div>
+            </div>
+        </aside>
+
+        <!-- 主要內容區 -->
+        <main class="flex-1 p-4 lg:p-8 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 bg-slate-50">
+            
+            <!-- 左側個人資訊 -->
+            <div class="w-full md:w-64 space-y-4">
+                <div class="bg-white rounded-2xl p-6 flex flex-col items-center card-shadow">
+                    <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4 relative">
+                        <i class="fas fa-user text-slate-400 text-4xl"></i>
+                    </div>
+                    <div class="text-gray-700 font-bold mb-4 italic text-sm text-center">帳戶: KATEST7771</div>
+                    <div class="w-full space-y-2 border-t pt-4 text-xs">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-gray-400"><i class="fas fa-wallet text-blue-500 mr-2"></i> 現金</div>
+                            <div class="flex items-center space-x-2"><span class="text-green-500 font-bold">$ 499,296</span> <i class="fas fa-redo text-gray-300 text-[10px] cursor-pointer"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl card-shadow overflow-hidden text-sm text-gray-600">
+                    <div class="p-3 hover:bg-slate-50 flex items-center cursor-pointer border-b border-gray-50"><i class="far fa-user-circle mr-3 w-5 text-gray-400 text-center"></i> 資訊</div>
+                    <div class="p-3 hover:bg-slate-50 flex items-center cursor-pointer border-b border-gray-50"><i class="fas fa-award mr-3 w-5 text-orange-400 text-center"></i> VIP 獎勵</div>
+                    <div class="p-3 hover:bg-slate-50 flex items-center cursor-pointer border-b border-gray-50"><i class="fas fa-coins mr-3 w-5 text-gray-400 text-center"></i> 存款</div>
+                </div>
+            </div>
+
+            <!-- 右側訊息面板 -->
+            <div class="flex-1 bg-white rounded-3xl p-6 lg:p-8 card-shadow relative min-h-[600px]">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center space-x-4">
+                        <button class="text-blue-600 hover:text-blue-800 transition"><i class="fas fa-arrow-left text-xl"></i></button>
+                        <h1 class="text-3xl font-bold text-blue-600">我的訊息</h1>
+                    </div>
+                </div>
+
+                <!-- 頁籤與搜尋 -->
+                <div class="flex flex-col space-y-4 mb-6">
+                    <div class="flex space-x-2">
+                        <button id="tab-inbox" onclick="switchTab('inbox')" class="px-8 py-2 rounded-lg font-bold text-sm transition tab-active shadow-sm">收件區</button>
+                        <button id="tab-outbox" onclick="switchTab('outbox')" class="px-8 py-2 rounded-lg font-bold text-sm transition tab-inactive hover:bg-gray-400">寄件區</button>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-end justify-between space-y-4 md:space-y-0">
+                        <div class="flex items-end space-x-3">
+                            <div>
+                                <label class="text-xs text-gray-500 font-bold block mb-1">日期</label>
+                                <div class="flex items-center border border-gray-200 rounded-lg px-3 py-2 bg-white w-56 cursor-pointer text-sm text-gray-600 shadow-sm">
+                                    <span class="flex-1">2026-04-02 ~ 2026-04-13</span>
+                                    <i class="far fa-calendar-alt text-gray-400"></i>
+                                </div>
+                            </div>
+                            <!-- 狀態搜尋欄位 -->
+                            <div>
+                                <label class="text-xs text-gray-500 font-bold block mb-1">狀態</label>
+                                <select id="search-status" class="border border-gray-200 rounded-lg px-3 py-2 bg-white w-32 text-sm text-gray-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 h-[40px]">
+                                    <option value="all">全部</option>
+                                    <option value="unread">未讀</option>
+                                    <option value="read">已讀</option>
+                                </select>
+                            </div>
+                            <button onclick="handleSearch()" class="bg-blue-600 text-white h-[40px] px-6 rounded-lg text-sm font-bold shadow-md hover:bg-blue-700 transition flex items-center">
+                                <i class="fas fa-search mr-2"></i> 搜尋
+                            </button>
+                        </div>
+                        <button id="btn-new-msg" onclick="openModal('msgModal')" class="hidden bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-blue-700 transition">新增郵件</button>
+                    </div>
+                </div>
+
+                <!-- 資料表格 -->
+                <div class="border border-gray-100 rounded-2xl overflow-hidden min-h-[400px] flex flex-col bg-white">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 border-b border-gray-100">
+                            <tr>
+                                <th class="px-6 py-4 text-gray-400 font-medium">標題</th>
+                                <th class="px-6 py-4 text-gray-400 font-medium text-center">時間</th>
+                                <th class="px-6 py-4 text-gray-400 font-medium text-center">狀態</th>
+                                <th class="px-6 py-4 text-gray-400 font-medium">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="message-list-body"></tbody>
+                    </table>
+                    <div id="no-data-view" class="flex-1 flex flex-col items-center justify-center py-20 text-gray-300 hidden">
+                        <div class="flex items-center text-gray-300 mb-2 font-bold opacity-30 italic"><i class="fas fa-gem mr-2"></i> GS intelligent</div>
+                        <p class="text-xs">查無符合條件的資料</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 查看站內信彈窗 -->
+    <div id="viewModal" class="fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl w-full max-w-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="px-6 py-4 flex items-center justify-between border-b bg-white sticky top-0">
+                <h3 class="text-lg font-bold text-gray-700">查看站內信內容</h3>
+                <button onclick="closeModal('viewModal')" class="text-gray-400 hover:text-gray-600 transition"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-white">
+                <div class="grid grid-cols-2 gap-6">
+                    <div><label class="block text-sm text-gray-400 mb-2">寄件者</label><div id="view-sender" class="bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700"></div></div>
+                    <div><label class="block text-sm text-gray-400 mb-2">收件時間</label><div id="view-time" class="bg-slate-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700"></div></div>
+                </div>
+                <div><label class="block text-sm text-gray-400 mb-2">主旨</label><div id="view-title" class="bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 font-medium"></div></div>
+                <div><label id="content-label" class="block text-sm text-gray-400 mb-2">內容</label><div id="view-content" class="bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-600 min-h-[100px] leading-relaxed"></div></div>
+
+                <!-- 寄件區專屬區塊 -->
+                <div id="chat-record-section" class="border-t border-dashed border-gray-200 pt-6 hidden">
+                    <h4 class="text-blue-600 font-bold text-sm mb-4 flex items-center"><span class="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></span> 對話紀錄</h4>
+                    <div id="chat-history" class="space-y-4"></div>
+                </div>
+                <div id="reply-section" class="bg-[#fffbeb] border border-[#fef3c7] rounded-2xl p-6 hidden">
+                    <h4 class="text-yellow-600 font-bold text-sm mb-3 flex items-center"><span class="w-1.5 h-1.5 bg-yellow-600 rounded-full mr-2"></span> 回覆站長</h4>
+                    <textarea placeholder="在此輸入回覆內容..." class="w-full bg-white border border-gray-100 rounded-xl p-4 text-sm focus:ring-2 focus:ring-blue-400 transition outline-none resize-none" rows="3"></textarea>
+                    <div class="flex justify-end mt-3"><button class="bg-[#22c55e] text-white px-6 py-2 rounded-lg text-sm font-bold flex items-center hover:bg-green-600 transition shadow-sm"><i class="fas fa-paper-plane mr-2"></i> 發送回覆</button></div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t bg-slate-50 flex items-center justify-end"><button onclick="closeModal('viewModal')" class="bg-[#3b82f6] text-white px-10 py-2.5 rounded-lg font-bold shadow-md hover:bg-blue-700 transition">關閉</button></div>
+        </div>
+    </div>
+
+    <!-- 關閉對話確認彈窗 -->
+    <div id="confirmCloseModal" class="fixed inset-0 bg-black bg-opacity-50 z-[70] flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-6 text-center">
+            <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl"><i class="fas fa-exclamation-triangle"></i></div>
+            <h3 class="text-lg font-bold text-gray-700 mb-2">確認關閉對話？</h3>
+            <p class="text-sm text-gray-500 mb-6">關閉後將無法再進行回覆，確認要結束此段對話嗎？</p>
+            <div class="flex space-x-3">
+                <button onclick="closeModal('confirmCloseModal')" class="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-600 font-bold hover:bg-gray-50 transition">取消</button>
+                <button id="confirm-close-btn" class="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg font-bold hover:bg-red-600 transition shadow-md">確認關閉</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增郵件彈窗 -->
+    <div id="msgModal" class="fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden">
+            <div class="px-6 py-4 flex items-center justify-between border-b"><h3 class="text-lg font-bold text-gray-700">新增郵件</h3><button onclick="closeModal('msgModal')" class="text-gray-400 hover:text-gray-600 transition"><i class="fas fa-times text-xl"></i></button></div>
+            <div class="p-6 space-y-4">
+                <div><label class="block text-sm font-bold text-gray-600 mb-2">標題</label><input id="input-title" type="text" placeholder="請輸入標題" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 transition text-sm bg-slate-50"></div>
+                <div><label class="block text-sm font-bold text-gray-600 mb-2">內容</label><textarea id="input-content" placeholder="請輸入內容" rows="5" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 transition text-sm bg-slate-50 resize-none"></textarea></div>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 flex items-center justify-end space-x-3"><button onclick="closeModal('msgModal')" class="text-blue-500 font-bold px-6 py-2 hover:bg-blue-50 rounded-lg transition">取消</button><button onclick="handleSend()" class="bg-blue-600 text-white px-8 py-2 rounded-lg font-bold shadow-md hover:bg-blue-700 transition">發送郵件</button></div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'inbox';
+        const currentUserID = 'KATEST7771';
+        let filterStatus = 'all';
+
+        let inboxData = [
+            { id: 101, title: '【系統通知】存款成功確認', time: '2026-04-13 14:20', content: '金額：EUR 1,000 已匯入您的帳戶。', status: 'unread' },
+            { id: 102, title: '活動獎勵發放：週末狂歡加成', time: '2026-04-12 10:00', content: '紅利 EUR 50 已發送。', status: 'read' }
+        ];
+
+        let outboxData = [
+            { id: 1, title: '關於提款問題諮詢', time: '2026-04-09 10:30', content: '我的提款遇到問題，交易已經 pending 了 3 天。', status: 'read', isClosed: false }
+        ];
+
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notification-container');
+            const toast = document.createElement('div');
+            toast.className = `px-6 py-3 rounded-xl shadow-lg text-white font-bold flex items-center space-x-3 animate-slide-in ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        function renderList() {
+            const listBody = document.getElementById('message-list-body');
+            const noDataView = document.getElementById('no-data-view');
+            const dataPool = currentTab === 'inbox' ? inboxData : outboxData;
+            
+            // 過濾邏輯
+            const filteredData = dataPool.filter(item => {
+                if (filterStatus === 'all') return true;
+                if (currentTab === 'outbox' && filterStatus === 'closed') return item.isClosed;
+                if (currentTab === 'outbox' && filterStatus !== 'closed' && item.isClosed) return false;
+                return item.status === filterStatus;
+            });
+
+            listBody.innerHTML = '';
+            if (filteredData.length === 0) {
+                noDataView.classList.remove('hidden');
+            } else {
+                noDataView.classList.add('hidden');
+                filteredData.forEach(item => {
+                    let statusBadge = '';
+                    if (currentTab === 'outbox' && item.isClosed) {
+                        statusBadge = '<span class="px-2 py-1 rounded-full bg-gray-100 text-gray-500 text-[10px] font-bold">對話關閉</span>';
+                    } else {
+                        statusBadge = item.status === 'read' 
+                            ? '<span class="px-2 py-1 rounded-full bg-green-100 text-green-600 text-[10px] font-bold">已讀</span>'
+                            : '<span class="px-2 py-1 rounded-full bg-slate-200 text-slate-500 text-[10px] font-bold">未讀</span>';
+                    }
+
+                    const row = document.createElement('tr');
+                    row.className = "border-b hover:bg-slate-50 transition text-sm cursor-pointer";
+                    
+                    let actions = `<button onclick="event.stopPropagation(); openDetailModal(${item.id})" class="text-blue-500 hover:underline font-bold mr-3">查看</button>`;
+                    if (currentTab === 'outbox' && !item.isClosed) {
+                        actions += `<button onclick="event.stopPropagation(); promptCloseConversation(${item.id})" class="text-red-500 hover:underline font-bold">關閉對話</button>`;
+                    }
+
+                    row.innerHTML = `
+                        <td class="px-6 py-4 font-medium text-gray-700">${item.title}</td>
+                        <td class="px-6 py-4 text-gray-400 text-xs text-center">${item.time}</td>
+                        <td class="px-6 py-4 text-center">${statusBadge}</td>
+                        <td class="px-6 py-4">${actions}</td>
+                    `;
+                    row.onclick = () => openDetailModal(item.id);
+                    listBody.appendChild(row);
+                });
+            }
+        }
+
+        function switchTab(type) {
+            currentTab = type;
+            filterStatus = 'all'; // 切換標籤時重置過濾
+            
+            const statusSelect = document.getElementById('search-status');
+            statusSelect.innerHTML = '<option value="all">全部</option><option value="unread">未讀</option><option value="read">已讀</option>';
+            if (type === 'outbox') {
+                const closedOpt = document.createElement('option');
+                closedOpt.value = 'closed';
+                closedOpt.text = '對話關閉';
+                statusSelect.add(closedOpt);
+            }
+            statusSelect.value = 'all';
+
+            document.getElementById('tab-inbox').className = type === 'inbox' ? 'px-8 py-2 rounded-lg font-bold text-sm transition tab-active shadow-sm' : 'px-8 py-2 rounded-lg font-bold text-sm transition tab-inactive hover:bg-gray-400';
+            document.getElementById('tab-outbox').className = type === 'outbox' ? 'px-8 py-2 rounded-lg font-bold text-sm transition tab-active shadow-sm' : 'px-8 py-2 rounded-lg font-bold text-sm transition tab-inactive hover:bg-gray-400';
+            document.getElementById('btn-new-msg').classList.toggle('hidden', type === 'inbox');
+            renderList();
+        }
+
+        function handleSearch() {
+            filterStatus = document.getElementById('search-status').value;
+            showNotification('搜尋完成');
+            renderList();
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function openDetailModal(id) {
+            const data = currentTab === 'inbox' ? inboxData : outboxData;
+            const item = data.find(d => d.id === id);
+            if (!item) return;
+            if (item.status === 'unread') { item.status = 'read'; renderList(); }
+
+            document.getElementById('view-sender').innerText = currentTab === 'inbox' ? '站長' : currentUserID;
+            document.getElementById('view-title').innerText = item.title;
+            document.getElementById('view-time').innerText = item.time;
+            document.getElementById('view-content').innerText = item.content;
+            
+            const chatRecordSection = document.getElementById('chat-record-section');
+            const replySection = document.getElementById('reply-section');
+            const contentLabel = document.getElementById('content-label');
+
+            if (currentTab === 'outbox') {
+                chatRecordSection.classList.remove('hidden');
+                item.isClosed ? replySection.classList.add('hidden') : replySection.classList.remove('hidden');
+                contentLabel.innerText = "玩家留言內容";
+            } else {
+                chatRecordSection.classList.add('hidden');
+                replySection.classList.add('hidden');
+                contentLabel.innerText = "內容";
+            }
+            openModal('viewModal');
+        }
+
+        function promptCloseConversation(id) {
+            const confirmBtn = document.getElementById('confirm-close-btn');
+            confirmBtn.onclick = () => {
+                const item = outboxData.find(d => d.id === id);
+                if (item) {
+                    item.isClosed = true;
+                    renderList();
+                    showNotification('對話已關閉');
+                    closeModal('confirmCloseModal');
+                }
+            };
+            openModal('confirmCloseModal');
+        }
+
+        function handleSend() {
+            const title = document.getElementById('input-title').value;
+            const content = document.getElementById('input-content').value;
+            if (!title || !content) { showNotification('標題與內容不能為空', 'error'); return; }
+            const now = new Date();
+            const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            outboxData.unshift({ id: Date.now(), title, time: timeStr, content, status: 'unread', isClosed: false });
+            showNotification('郵件成功發送！');
+            closeModal('msgModal');
+            document.getElementById('input-title').value = '';
+            document.getElementById('input-content').value = '';
+            renderList();
+        }
+
+        switchTab('inbox');
+    </script>
+</body>
+</html>

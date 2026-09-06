@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>站內信管理 - GS intelligent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { 
+            font-family: 'Inter', "Microsoft JhengHei", sans-serif; 
+            background-color: #f0f2f5; 
+        }
+        .sidebar-active { 
+            background-color: #1890ff !important; 
+            color: white !important; 
+        }
+        .tab-active { 
+            color: #1890ff; 
+            border-bottom: 2px solid #1890ff; 
+        }
+        .table-header { 
+            background-color: #fafafa; 
+        }
+        /* 自定義捲軸 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Modal 動畫 */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.45);
+            transition: opacity 0.2s ease;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden text-gray-700">
+
+    <!-- 側邊欄 -->
+    <aside class="w-64 bg-[#001529] text-gray-300 flex-shrink-0 hidden md:flex flex-col">
+        <div class="p-6 flex items-center space-x-2">
+            <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
+                <i class="fas fa-cube text-white"></i>
+            </div>
+            <span class="text-white text-xl font-bold tracking-wider">GS intelligent</span>
+        </div>
+
+        <nav class="mt-4 text-sm flex-1 overflow-y-auto">
+            <div class="px-4 py-3 flex items-center hover:bg-gray-800 cursor-pointer transition-colors">
+                <i class="fas fa-users w-6 text-center mr-2"></i> <span>會員管理</span>
+            </div>
+            <div class="px-4 py-3 flex items-center hover:bg-gray-800 cursor-pointer justify-between transition-colors">
+                <div class="flex items-center"><i class="fas fa-user-tie w-6 text-center mr-2"></i> <span>代理管理</span></div>
+                <i class="fas fa-chevron-down text-[10px]"></i>
+            </div>
+            <div class="px-4 py-3 flex items-center hover:bg-gray-800 cursor-pointer justify-between transition-colors">
+                <div class="flex items-center"><i class="fas fa-bullhorn w-6 text-center mr-2"></i> <span>行銷活動</span></div>
+                <i class="fas fa-chevron-down text-[10px]"></i>
+            </div>
+            <div class="px-4 py-3 flex items-center hover:bg-gray-800 cursor-pointer justify-between transition-colors">
+                <div class="flex items-center"><i class="fas fa-chart-line w-6 text-center mr-2"></i> <span>平台紀錄</span></div>
+                <i class="fas fa-chevron-down text-[10px]"></i>
+            </div>
+            <div class="px-4 py-3 flex items-center hover:bg-gray-800 cursor-pointer justify-between text-blue-400">
+                <div class="flex items-center"><i class="fas fa-desktop w-6 text-center mr-2"></i> <span>內容管理</span></div>
+                <i class="fas fa-chevron-up text-[10px]"></i>
+            </div>
+            <div class="bg-black/20 text-gray-400 text-xs">
+                <div class="pl-12 py-3 hover:text-white cursor-pointer transition-colors">版面設定</div>
+                <div class="pl-12 py-3 hover:text-white cursor-pointer transition-colors">公告管理</div>
+                <div class="pl-12 py-3 sidebar-active text-white cursor-pointer">站內信功能</div>
+                <div class="pl-12 py-3 hover:text-white cursor-pointer transition-colors">產品管理</div>
+            </div>
+            <div class="px-4 py-3 flex items-center hover:bg-gray-800 cursor-pointer justify-between transition-colors">
+                <div class="flex items-center"><i class="fas fa-cog w-6 text-center mr-2"></i> <span>系統設定</span></div>
+                <i class="fas fa-chevron-down text-[10px]"></i>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- 主內容區 -->
+    <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <!-- 頂部導航 -->
+        <header class="h-14 bg-white border-b flex items-center justify-between px-6 flex-shrink-0 shadow-sm z-10">
+            <i class="fas fa-bars text-gray-400 cursor-pointer hover:text-gray-600 transition-colors"></i>
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-3">
+                    <div class="text-right">
+                        <div class="text-blue-600 font-semibold text-sm leading-tight">msa1</div>
+                        <div class="text-gray-400 text-[10px]">2026-04-08 17:05:35</div>
+                    </div>
+                    <div class="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-xs font-bold text-blue-500 border border-gray-200">
+                        MS
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 頁面主體 -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-6">
+            <h1 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-envelope-open-text mr-2 text-blue-500"></i>
+                站內信管理
+            </h1>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col overflow-hidden">
+                <!-- Tabs 分頁標籤 -->
+                <div class="flex border-b bg-gray-50/50 px-6 overflow-x-auto no-scrollbar">
+                    <button onclick="switchTab('manual')" id="tab-manual" class="px-6 py-4 tab-active font-medium text-sm transition-colors whitespace-nowrap outline-none">系統訊息</button>
+                    <button onclick="switchTab('auto')" id="tab-auto" class="px-6 py-4 text-gray-500 hover:text-blue-500 font-medium text-sm transition-colors whitespace-nowrap outline-none">系統自動發信紀錄</button>
+                    <button onclick="switchTab('inquiry')" id="tab-inquiry" class="px-6 py-4 text-gray-500 hover:text-blue-500 font-medium text-sm transition-colors whitespace-nowrap outline-none">會員諮詢</button>
+                </div>
+
+                <div class="p-6 space-y-6">
+                    <!-- 搜尋過濾器 -->
+                    <div id="filter-grid" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-gray-50 p-4 rounded-lg border border-gray-100">
+                        <!-- 時間區間 -->
+                        <div id="time-range-col" class="md:col-span-5">
+                            <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">時間區間</label>
+                            <div class="flex items-center border border-gray-300 rounded px-3 py-2 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-200 transition-all bg-white group">
+                                <i class="far fa-calendar text-gray-400 mr-2 group-focus-within:text-blue-500"></i>
+                                <input type="text" value="2026-04-08 00:00:00 - 2026-04-08 23:59:59" class="w-full text-sm outline-none bg-transparent">
+                            </div>
+                        </div>
+                        
+                        <!-- 會員帳號 -->
+                        <div id="member-account-col" class="md:col-span-5">
+                            <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">會員帳號</label>
+                            <input type="text" placeholder="請輸入會員帳號" class="w-full border border-gray-300 rounded px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all bg-white">
+                        </div>
+
+                        <!-- 功能 (僅在系統自動發信紀錄顯示) -->
+                        <div id="trigger-function-col" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">功能</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all bg-white">
+                                <option value="">功能</option>
+                                <option>會員代理</option>
+                                <option>上級返佣</option>
+                                <option>優惠管理_存款</option>
+                                <option>優惠管理_投注</option>
+                                <option>優惠管理_註冊</option>
+                                <option>邀請彩金</option>
+                                <option>免費旋轉</option>
+                                <option>禮金明細</option>
+                                <option>返水</option>
+                                <option>利息寶</option>
+                            </select>
+                        </div>
+
+                        <!-- 狀態 (僅在系統自動發信紀錄顯示) -->
+                        <div id="status-col" class="md:col-span-2 hidden">
+                            <label class="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wider">狀態</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-all bg-white">
+                                <option value="">全部</option>
+                                <option>成功</option>
+                                <option>失敗</option>
+                            </select>
+                        </div>
+
+                        <!-- 搜尋按鈕 -->
+                        <div id="search-btn-col" class="md:col-span-2">
+                            <button class="w-full bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white py-2 rounded text-sm transition-all flex items-center justify-center space-x-2 shadow-md hover:shadow-lg">
+                                <i class="fas fa-search"></i>
+                                <span>搜尋</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 操作按鈕 (僅在系統訊息顯示) -->
+                    <div id="action-bar" class="flex justify-start">
+                        <button class="border border-blue-500 text-blue-500 px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-50 active:bg-blue-100 flex items-center space-x-2 transition-all shadow-sm">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>新增發信</span>
+                        </button>
+                    </div>
+
+                    <!-- 表格 -->
+                    <div class="overflow-x-auto rounded-lg border border-gray-100 shadow-sm">
+                        <table class="w-full text-sm text-left min-w-[1000px] border-collapse bg-white">
+                            <thead class="table-header text-gray-500 font-semibold border-b">
+                                <tr id="table-head">
+                                    <!-- Header injected by JS -->
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="divide-y divide-gray-100 text-gray-600">
+                                <!-- Data rows injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分頁控制 -->
+                    <div class="flex flex-col md:flex-row items-center justify-between mt-4 text-sm text-gray-500 gap-4 pt-4 border-t border-gray-50">
+                        <div class="flex items-center space-x-6">
+                            <div class="flex items-center">
+                                <span class="mr-2">每頁顯示</span>
+                                <select class="border rounded-md px-2 py-1 outline-none focus:border-blue-400 bg-white shadow-sm">
+                                    <option>20</option>
+                                    <option>50</option>
+                                </select>
+                                <span class="ml-2">條</span>
+                            </div>
+                            <span id="total-count" class="font-medium text-gray-400 italic">共 11 條記錄</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <button class="px-3 py-1.5 border rounded hover:bg-gray-50 text-gray-400 transition-colors">
+                                <i class="fas fa-chevron-left text-[10px]"></i> 上一頁
+                            </button>
+                            <button class="px-4 py-1.5 bg-blue-500 text-white border border-blue-500 rounded shadow-sm font-medium">1</button>
+                            <button class="px-3 py-1.5 border rounded hover:bg-gray-50 text-gray-400 transition-colors">
+                                下一頁 <i class="fas fa-chevron-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 查看詳情彈窗 (Modal) -->
+    <div id="detail-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 modal-backdrop" onclick="closeModal()"></div>
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl relative z-10 overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b flex items-center justify-between">
+                <h2 class="text-lg font-bold text-[#4a5568]">查看站內信</h2>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="p-8 overflow-y-auto space-y-6">
+                <!-- 收件會員帳號 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2">收件會員帳號</label>
+                    <div class="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 flex items-center">
+                        <span id="modal-recipient" class="bg-gray-200 text-gray-600 px-4 py-1.5 rounded-full text-sm font-medium border border-gray-300">agent_001</span>
+                    </div>
+                </div>
+
+                <!-- 發送時間 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-2">發送時間</label>
+                    <div class="w-full bg-gray-50 border border-gray-200 rounded-lg p-3 text-gray-500 text-sm" id="modal-time">
+                        2026-04-08 15:12
+                    </div>
+                </div>
+
+                <!-- 語言切換標籤 -->
+                <div class="flex space-x-2">
+                    <button class="px-6 py-2 bg-blue-100 text-blue-500 rounded-lg text-sm font-medium border border-blue-200">en</button>
+                    <button class="px-6 py-2 bg-gray-100 text-gray-400 rounded-lg text-sm font-medium border border-gray-200">ko</button>
+                    <button class="px-6 py-2 bg-gray-100 text-gray-400 rounded-lg text-sm font-medium border border-gray-200">zh-tw</button>
+                </div>
+
+                <!-- 藍色外框容器 (標題與內容) -->
+                <div class="bg-[#f0f7ff] border border-[#d1e9ff] rounded-2xl p-6 space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">標題</label>
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 text-gray-700" id="modal-title">
+                            代理獎勵通知
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">內容</label>
+                        <div class="bg-white border border-gray-200 rounded-xl p-4 text-gray-700 min-h-[150px] leading-relaxed whitespace-pre-line" id="modal-content">
+                            您的會員代理獎勵已發放成功 🎊
+                            本次獲得獎勵：100 USD
+                            請前往會員中心_歷史頁面查看明細。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 py-4 bg-gray-50 border-t flex justify-end">
+                <button onclick="closeModal()" class="px-8 py-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white rounded-lg font-medium shadow-md transition-all">
+                    關閉
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模擬數據
+        const data = {
+            manual: [
+                { id: 1, recipient: '全體會員', sender: 'msa1', subject: 'Welcome to our platform!', time: '2026-04-08 17:05', status: '已發送' },
+                { id: 2, recipient: '超級VIP', sender: 'msa1', subject: 'Exclusive VIP Bonus inside!', time: '2026-04-08 16:30', status: '已發送' },
+                { id: 3, recipient: 'Katest777*', sender: 'msa1', subject: '系統維護通知', time: '2026-04-08 15:12', status: '已發送' }
+            ],
+            auto: [
+                { id: 1, function: '會員代理', title: '代理獎勵通知', recipient: 'agent_001', time: '2026-04-08 17:10', status: '成功', content: '您的會員代理獎項已發放成功 🎊\n本次獲得獎勵：100 USD\n請前往會員中心_歷史頁面查看明細。' },
+                { id: 2, function: '上級返佣', title: '代理獎勵通知', recipient: 'master_king', time: '2026-04-08 16:55', status: '成功', content: '您的上級返佣獎項已發放成功 🎊\n本次獲得獎項：100 USD\n請前往會員中心_歷史頁面查看明細。' },
+                { id: 3, function: '優惠管理_存款', title: '活動獎勵通知', recipient: 'user_rich', time: '2026-04-08 16:40', status: '成功', content: '您的存款優惠獎勵已發放成功 🎊\n本次獲得獎勵：100 USD\n請前往會員中心_歷史頁面查看明細。' },
+                { id: 4, function: '優惠管理_投注', title: '活動獎勵通知', recipient: 'gamer_pro', time: '2026-04-08 16:20', status: '成功', content: '您的投注優惠獎勵已發放成功 🎊\n本次獲得獎勵：100 USD\n請前往會員中心_歷史頁面查看明細。' },
+                { id: 5, function: '優惠管理_註冊', title: '活動獎勵通知', recipient: 'newbie_01', time: '2026-04-08 15:50', status: '成功', content: '您的註冊優惠獎項已發放成功 🎊\n本次獲得獎勵：100 USD\n請前往會員中心_歷史頁面查看明細。' },
+                { id: 6, function: '邀請彩金', title: '活動獎勵通知', recipient: 'inviter_99', time: '2026-04-08 15:30', status: '成功', content: '您的邀請獎勵已發放成功 🎊\n本次獲得獎項：100 USD\n請前往會員中心_歷史頁面查看明細。' },
+                { id: 7, function: '免費旋轉', title: '活動獎勵通知', recipient: 'lucky_spin', time: '2026-04-08 15:10', status: '成功', content: 'WOW Gaming 《The four Divine Beasts》免費遊戲已發放成功...\n請點擊查看。' },
+                { id: 8, function: '禮金明細', title: '活動獎勵通知', recipient: 'user_888', time: '2026-04-08 14:45', status: '成功', content: '禮金已發放成功 🎊\n本次獲得禮金：100 USD\n請前往會員中心_歷史頁面查看明細。' },
+                { id: 9, function: '返水', title: '活動獎勵通知', recipient: 'active_player', time: '2026-04-08 14:20', status: '成功', content: '您的返水獎勵已發放成功 🎊\n本次獲得獎項：100 USD\n請前往會員中心_歷史頁面查看明細。' },
+                { id: 10, function: '利息寶', title: '活動獎項通知', recipient: 'saver_007', time: '2026-04-08 13:50', status: '成功', content: '您的利息寶利息已發放成功 🎊\n本次獲得利息：100 USD\n請前往會員中心_歷史頁面查看明細。' },
+                { id: 11, function: 'Jackpot', title: '活動獎勵通知', recipient: 'winner_jack', time: '2026-04-08 13:00', status: '成功', content: '您的 Jackpot 獎勵已發放成功 🎊\n本次獲得獎勵：100 USD\n請前往會員中心_歷史頁面查看明細。' }
+            ],
+            inquiry: [
+                { id: 1, sender: 'test01', subject: '無法完成充值問題', time: '2026-04-08 15:00', status: '待處理' }
+            ]
+        };
+
+        function switchTab(tab) {
+            const tabs = ['manual', 'auto', 'inquiry'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                el.classList.remove('tab-active');
+                el.classList.add('text-gray-500');
+            });
+            document.getElementById(`tab-${tab}`).classList.add('tab-active');
+            document.getElementById(`tab-${tab}`).classList.remove('text-gray-500');
+
+            const actionBar = document.getElementById('action-bar');
+            actionBar.style.display = (tab === 'manual') ? 'flex' : 'none';
+
+            const triggerCol = document.getElementById('trigger-function-col');
+            const statusCol = document.getElementById('status-col');
+            const timeCol = document.getElementById('time-range-col');
+            const accountCol = document.getElementById('member-account-col');
+
+            if (tab === 'auto') {
+                triggerCol.classList.remove('hidden');
+                statusCol.classList.remove('hidden');
+                // 調整欄位比例以容納五個欄位
+                timeCol.className = 'md:col-span-3';
+                accountCol.className = 'md:col-span-3';
+            } else {
+                triggerCol.classList.add('hidden');
+                statusCol.classList.add('hidden');
+                // 恢復原本的對稱比例
+                timeCol.className = 'md:col-span-5';
+                accountCol.className = 'md:col-span-5';
+            }
+
+            renderTable(tab);
+        }
+
+        // 開啟詳情彈窗
+        window.openDetailModal = function(id) {
+            const item = data.auto.find(i => i.id === id);
+            if (!item) return;
+
+            document.getElementById('modal-recipient').innerText = item.recipient;
+            document.getElementById('modal-time').innerText = item.time;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-content').innerText = item.content;
+
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 關閉詳情彈窗
+        window.closeModal = function() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function renderTable(tab) {
+            const thead = document.getElementById('table-head');
+            const tbody = document.getElementById('table-body');
+            const totalCount = document.getElementById('total-count');
+            
+            tbody.innerHTML = '';
+            totalCount.innerText = `共 ${data[tab].length} 條記錄`;
+
+            if (tab === 'manual') {
+                thead.innerHTML = `
+                    <th class="px-4 py-4 font-semibold text-center w-16">No.</th>
+                    <th class="px-4 py-4 font-semibold">收件者</th>
+                    <th class="px-4 py-4 font-semibold">寄件者</th>
+                    <th class="px-4 py-4 font-semibold">主題</th>
+                    <th class="px-4 py-4 font-semibold w-48">發送時間</th>
+                    <th class="px-4 py-4 font-semibold w-24 text-center">狀態</th>
+                    <th class="px-4 py-4 font-semibold w-32 text-center">功能</th>
+                `;
+                data.manual.forEach(item => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-blue-50/30 transition-colors">
+                            <td class="px-4 py-4 text-center font-mono text-gray-400">${item.id.toString().padStart(2, '0')}</td>
+                            <td class="px-4 py-4"><span class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-xs font-medium border border-blue-100">${item.recipient}</span></td>
+                            <td class="px-4 py-4 font-medium">${item.sender}</td>
+                            <td class="px-4 py-4">${item.subject}</td>
+                            <td class="px-4 py-4 text-gray-400 text-xs">${item.time}</td>
+                            <td class="px-4 py-4 text-center"><span class="bg-green-50 px-2 py-1 rounded text-green-600 text-xs border border-green-100 font-medium">${item.status}</span></td>
+                            <td class="px-4 py-4 text-center space-x-3">
+                                <button class="text-blue-500 hover:text-blue-700 transition-colors"><i class="far fa-eye mr-1"></i>查看</button>
+                                <button class="text-red-400 hover:text-red-600 transition-colors"><i class="far fa-trash-alt mr-1"></i>刪除</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } else if (tab === 'auto') {
+                thead.innerHTML = `
+                    <th class="px-6 py-4 font-semibold w-40">功能</th>
+                    <th class="px-6 py-4 font-semibold w-48">訊息標題</th>
+                    <th class="px-6 py-4 font-semibold">收件會員</th>
+                    <th class="px-6 py-4 font-semibold w-56">發送時間</th>
+                    <th class="px-6 py-4 font-semibold w-24 text-center">狀態</th>
+                    <th class="px-6 py-4 font-semibold w-24 text-center">功能</th>
+                `;
+                data.auto.forEach(item => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-blue-50/30 transition-colors">
+                            <td class="px-6 py-4 font-semibold text-blue-600">${item.function}</td>
+                            <td class="px-6 py-4 font-medium">${item.title}</td>
+                            <td class="px-6 py-4"><span class="text-gray-800 font-medium">${item.recipient}</span></td>
+                            <td class="px-6 py-4 text-gray-400 text-xs">${item.time}</td>
+                            <td class="px-6 py-4 text-center"><span class="bg-blue-50 px-2 py-1 rounded text-blue-600 text-xs border border-blue-100 font-medium">${item.status}</span></td>
+                            <td class="px-6 py-4 text-center"><button onclick="openDetailModal(${item.id})" class="text-blue-500 hover:underline font-medium">詳情</button></td>
+                        </tr>
+                    `;
+                });
+            } else {
+                thead.innerHTML = `
+                    <th class="px-4 py-4 font-semibold text-center w-16">No.</th>
+                    <th class="px-4 py-4 font-semibold">發問會員</th>
+                    <th class="px-4 py-4 font-semibold">諮詢主題</th>
+                    <th class="px-4 py-4 font-semibold w-48">諮詢時間</th>
+                    <th class="px-4 py-4 font-semibold w-24 text-center">狀態</th>
+                    <th class="px-4 py-4 font-semibold w-32 text-center">功能</th>
+                `;
+                data.inquiry.forEach(item => {
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-blue-50/30 transition-colors">
+                            <td class="px-4 py-4 text-center font-mono text-gray-400">${item.id.toString().padStart(2, '0')}</td>
+                            <td class="px-4 py-4 font-semibold text-gray-700">${item.sender}</td>
+                            <td class="px-4 py-4">${item.subject}</td>
+                            <td class="px-4 py-4 text-gray-400 text-xs">${item.time}</td>
+                            <td class="px-4 py-4 text-center"><span class="bg-orange-50 text-orange-500 border-orange-200 px-2 py-1 rounded text-xs border font-medium">${item.status}</span></td>
+                            <td class="px-4 py-4 text-center"><button class="bg-blue-500 text-white px-4 py-1 rounded-full text-xs hover:bg-blue-600 transition-all shadow-sm">回覆</button></td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        window.onload = () => renderTable('manual');
+    </script>
+</body>
+</html>
