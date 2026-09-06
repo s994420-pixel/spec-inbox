@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>站內信系統 — 規格書</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, 'Noto Sans TC', sans-serif;
+      background: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+    }
+    .label {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.1em; color: #64b5f6;
+      text-transform: uppercase; margin-bottom: 0.6rem;
+    }
+    h1 { font-size: 1.8rem; font-weight: 700; color: #1a202c; margin-bottom: 0.4rem; }
+    .desc { font-size: 0.9rem; color: #718096; margin-bottom: 2.4rem; line-height: 1.6; }
+    .btn-group { display: flex; flex-direction: column; gap: 1rem; }
+    .btn {
+      display: block; padding: 1rem 1.5rem;
+      border-radius: 10px; text-decoration: none;
+      font-weight: 600; font-size: 1rem; transition: all 0.2s;
+    }
+    .btn-primary { background: #1a56db; color: #fff; }
+    .btn-primary:hover { background: #1e429f; }
+    .btn-secondary { background: #f0f4ff; color: #1a56db; border: 1px solid #c3dafe; }
+    .btn-secondary:hover { background: #e0eaff; }
+    .btn span { display: block; font-size: 0.78rem; font-weight: 400; opacity: 0.75; margin-top: 0.2rem; }
+    .footer { margin-top: 2rem; font-size: 0.75rem; color: #a0aec0; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <p class="label">WOW Gaming · 功能規格書</p>
+    <h1>站內信系統</h1>
+    <p class="desc">請選擇要查看的規格書版本</p>
+    <div class="btn-group">
+      <a class="btn btn-primary" href="./%E7%AB%99%E5%85%A7%E4%BF%A1/%E6%9C%83%E5%93%A1%E7%AB%AF%20%E6%94%B6%E5%AF%84%E4%BB%B6%E5%8D%80%20%E7%AC%AC%E4%B8%80%E9%9A%8E%E6%AE%B5.html">
+        會員端
+        <span>收寄件區 第一階段</span>
+      </a>
+      <a class="btn btn-secondary" href="./%E7%AB%99%E5%85%A7%E4%BF%A1/%E5%BE%8C%E5%8F%B0_%E7%B3%BB%E7%B5%B1%E8%87%AA%E5%8B%95%E7%99%BC%E4%BF%A1%E7%B4%80%E9%8C%84%20%E7%AC%AC%E4%BA%8C%E9%9A%8E%E6%AE%B5.html">
+        後台
+        <span>系統自動發信紀錄 第二階段</span>
+      </a>
+    </div>
+    <p class="footer">Kate Lai · PM / 產品企劃</p>
+  </div>
+</body>
+</html>
